@@ -1,6 +1,5 @@
 package pass;
 
-import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -10,22 +9,14 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
-import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -133,11 +124,8 @@ public class MainController {
                 ((AccountSite) t.getTableView().getItems().get(
                         t.getTablePosition().getRow())
                 ).setPass(t.getNewValue());
-
                 String tempA = t.getNewValue();
                 String sql = "UPDATE `accounts` SET 'pass' = '" + tempA + "' WHERE `idSite` = " + (listViewSites.getSelectionModel().getSelectedIndex()+1) + " AND `id` = " + t.getRowValue().getId() + ";";
-                System.out.println("idSite = " + t.getRowValue().getId());
-                System.out.println("id = " + t.getTablePosition().getRow());
                 try{
                     Statement s = connection.createStatement();
                     int rows = connection.createStatement().executeUpdate(sql);
@@ -250,27 +238,24 @@ public class MainController {
     @FXML
     private void addAccount(){
         try{
-//            Statement st = connection.createStatement();
-//            String sql = "INSERT INTO `accounts` VALUES()";
-//            int rows = st.executeUpdate(sql);
+            if(listViewSites.getSelectionModel().getSelectedIndex() < 0){
+                throw new NullPointerException();
+            }
             FXMLLoader fx = new FXMLLoader(getClass().getResource("newAccInfoDialog.fxml"));
             Parent parent = fx.load();
-            //NewAccInfoDialog nd = fx.getController();
-
+            NewAccInfoDialogController nd = fx.getController();
+            nd.start(listViewSites);
 
             Scene scene = new Scene(parent);
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
             stage.showAndWait();
-
-        //commit
-
+        }catch (NullPointerException e){
+            System.out.println("Choose any site");
         }catch (Exception e){
             e.printStackTrace();
         }
 
-
     }
-
 }
