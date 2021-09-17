@@ -180,8 +180,6 @@ public class MainController {
         return true;
     }
 
-
-
     private static class ListViewSitesCell extends ListCell<Site>{
 
         private Label s = new Label("");
@@ -276,6 +274,22 @@ public class MainController {
         }catch (Exception e){
            e.printStackTrace();
         }
+    }
 
+    @FXML
+    public void addSiteObject(ActionEvent actionEvent) {
+        try{
+            FXMLLoader fx = new FXMLLoader(getClass().getResource("newSiteInfoDialog.fxml"));
+            Parent parent = fx.load();
+            NewSiteInfoDialogController nd = fx.getController();
+            nd.fileUpload();
+            Scene scene = new Scene(parent);
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+            stage.showAndWait();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
