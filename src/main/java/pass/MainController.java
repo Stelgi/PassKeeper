@@ -2,6 +2,7 @@ package pass;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +18,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -24,6 +26,7 @@ public class MainController {
     private Connection connection;
     private ArrayList<Site> sites = new ArrayList<>();
     private ArrayList<Site> currentSites;
+    private int temp;
     @FXML
     private VBox sitesLayout = new VBox();
     @FXML
@@ -90,6 +93,7 @@ public class MainController {
 
     @FXML
     private void initTableView(int a){
+        temp = a;
         if(mainTableView.getColumns().isEmpty()) {
             idColumn.setCellValueFactory(new PropertyValueFactory<AccountSite, Integer>("id"));
             idColumn.setPrefWidth(70);
@@ -136,19 +140,12 @@ public class MainController {
 
 
             });
-
             mainTableView.setEditable(true);
             mainTableView.getColumns().addAll(idColumn, loginColumn, passColumn);
 
         }
-
         mainTableView.setItems(getAccountSite(a));
         mainTableView.getSelectionModel().setCellSelectionEnabled(true);
-
-//        mainTableView.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) ->{
-//            System.out.println(e.getTarget().toString());
-//        });
-
     }
 
     private ObservableList<AccountSite> getAccountSite(int a) {
@@ -182,6 +179,8 @@ public class MainController {
         }
         return true;
     }
+
+
 
     private static class ListViewSitesCell extends ListCell<Site>{
 
@@ -251,10 +250,31 @@ public class MainController {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
             stage.showAndWait();
+            initTableView(temp);
         }catch (NullPointerException e){
             System.out.println("Choose any site");
         }catch (Exception e){
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void delAccount(ActionEvent actionEvent) {
+        try{
+            if(mainTableView.getSelectionModel().getSelectedIndex() < 0){
+                throw new NullPointerException();
+            }
+            int i = mainTableView.getItems().get(mainTableView.getSelectionModel().getSelectedIndex()).getId();
+
+            Statement st = App.connectToDB().createStatement();
+            String sql = "DELETE FROM accounts WHERE id = " + i + ";";
+            int rows = st.executeUpdate(sql);
+            JOptionPane.showMessageDialog(null, "Успешно удалена " + rows + " строка", "Удалено", JOptionPane.INFORMATION_MESSAGE);
+            initTableView(temp);
+        }catch (NullPointerException e){
+            System.out.println("Choose any cell");
+        }catch (Exception e){
+           e.printStackTrace();
         }
 
     }

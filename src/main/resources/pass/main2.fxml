@@ -165,7 +165,7 @@
                               <Insets right="30.0" />
                            </HBox.margin>
                         </Button>
-                        <Button alignment="TOP_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" text="Удалить запись" HBox.hgrow="ALWAYS" />
+                        <Button alignment="TOP_RIGHT" onAction="#delAccount" contentDisplay="CENTER" mnemonicParsing="false" text="Удалить запись" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                   <TableView fx:id="mainTableView" prefHeight="200.0" prefWidth="200.0" styleClass="tableMainClass" VBox.vgrow="ALWAYS" />
