@@ -24,9 +24,10 @@ import java.util.ArrayList;
 
 public class MainController {
     private Connection connection;
-    private ArrayList<Site> sites = new ArrayList<>();
+    private ArrayList<Site> sites;
     private ArrayList<Site> currentSites;
     private int temp;
+    public static int countSites;
     @FXML
     private VBox sitesLayout = new VBox();
     @FXML
@@ -54,6 +55,8 @@ public class MainController {
     @FXML
     private void initialize() {
         if(connectDB()){
+            sites = new ArrayList<>();
+            i = 0;
             try{
                 ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM `sites`;");
                 while(rs.next()){
@@ -146,9 +149,11 @@ public class MainController {
         }
         mainTableView.setItems(getAccountSite(a));
         mainTableView.getSelectionModel().setCellSelectionEnabled(true);
+        countSites = a;
     }
 
     private ObservableList<AccountSite> getAccountSite(int a) {
+        countSites = a;
         ObservableList<AccountSite> tempListAccountSite;
         ArrayList<AccountSite> tempArrayAccountSite = new ArrayList<>();
         try {
@@ -288,8 +293,37 @@ public class MainController {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
             stage.showAndWait();
+            refreshSites();
+            System.out.println("ended");
+
         }catch (Exception e){
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void refreshSites() {
+        int count = 0;
+        sites.clear();
+        try {
+            ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM `sites`;");
+
+            while (resultSet.next()) {
+                sites.add(new Site());
+                sites.get(count).setId(resultSet.getInt(1));
+                sites.get(count).setName(resultSet.getString(2));
+                sites.get(count).setUrl(resultSet.getString(3));
+                count++;
+            }
+
+            ArrayList<Site> currentSites = new ArrayList<Site>(sites);
+            listViewSites.setCellFactory(param -> new ListViewSitesCell());
+            Site.refreshListView(currentSites, listViewSites);
+            sites = currentSites;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

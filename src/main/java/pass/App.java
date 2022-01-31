@@ -23,7 +23,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML("main2"));
         stage.setScene(scene);
-        stage.setTitle("PassKeeper v0.1.2");
+        stage.setTitle("PassKeeper v0.1.3");
         stage.show();
     }
 
