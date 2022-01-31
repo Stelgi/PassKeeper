@@ -282,7 +282,7 @@ public class MainController {
             FXMLLoader fx = new FXMLLoader(getClass().getResource("newSiteInfoDialog.fxml"));
             Parent parent = fx.load();
             NewSiteInfoDialogController nd = fx.getController();
-            nd.fileUpload();
+            //nd.fileUpload();
             Scene scene = new Scene(parent);
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
