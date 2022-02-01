@@ -49,8 +49,6 @@ public class NewSiteInfoDialogController {
             FileChooser fc = new FileChooser();
             fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text file","*.png"));
             file = fc.showOpenDialog(null);
-
-
             Image img = new Image(file.toURI().toString());
             if(img.isError()){
                 JOptionPane.showMessageDialog(null, "Ошибка загрузки файла!\nПопробуйте еще раз загрузить " + file.getName() + "\nИли попробуйте загрузить другой файл", "Ошибка", JOptionPane.ERROR_MESSAGE);
@@ -103,7 +101,6 @@ public class NewSiteInfoDialogController {
             preparedStatement.setString(2, URLInput.getText());
             preparedStatement.setString(3, "src/main/resources/img/icoSites/" + file.getName());
             preparedStatement.execute();
-
             if(!downloadImg(file)){
                 throw new Exception("Ошибка скачивания картинки");
             }
