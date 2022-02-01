@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pass.NewSiteInfoDialogController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pass.NewSiteInfoDialogController">
   <columnConstraints>
     <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="155.0" minWidth="10.0" prefWidth="121.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="199.0" minWidth="10.0" prefWidth="199.0" />
@@ -17,6 +17,7 @@
   <rowConstraints>
     <RowConstraints maxHeight="32.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="85.0" minHeight="0.0" prefHeight="50.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="197.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="197.0" minHeight="0.0" prefHeight="50.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="151.0" minHeight="10.0" prefHeight="54.0" vgrow="SOMETIMES" />
   </rowConstraints>
@@ -27,11 +28,20 @@
             <Insets right="10.0" />
          </GridPane.margin>
       </Label>
-      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="Иконка" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-      <Button fx:id="btnAdd" mnemonicParsing="false" onMouseClicked="#onButtonClick" prefHeight="25.0" prefWidth="360.0" text="Добавить" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-      <ImageView fx:id="imgT" fitHeight="52.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <TextField fx:id="loginInput" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <Label fx:id="lblBtn" onMouseClicked="#fileUpload" text="Нажми" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="Иконка" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+         <GridPane.margin>
+            <Insets right="10.0" />
+         </GridPane.margin></Label>
+      <Button fx:id="btnAdd" mnemonicParsing="false" onMouseClicked="#onButtonClick" prefHeight="25.0" prefWidth="360.0" text="Добавить" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+      <ImageView fx:id="imgT" fitHeight="52.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <TextField fx:id="nameSiteInput" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Label fx:id="lblBtn" onMouseClicked="#fileUpload" text="Нажми" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="URL:" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets right="10.0" />
+         </GridPane.margin>
+      </Label>
+      <TextField fx:id="URLInput" GridPane.columnIndex="1" GridPane.rowIndex="2" />
    </children>
    <padding>
       <Insets bottom="10.0" left="40.0" right="40.0" top="10.0" />

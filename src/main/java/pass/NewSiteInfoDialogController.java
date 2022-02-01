@@ -15,6 +15,9 @@ import javafx.stage.Stage;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,15 +29,14 @@ import java.util.Random;
 public class NewSiteInfoDialogController {
     @FXML
     private ImageView imgT;
-
     @FXML
-    private TextField loginInput;
-
+    private TextField nameSiteInput;
+    @FXML
+    private TextField URLInput;
     @FXML
     private javafx.scene.control.Label lblBtn;
 
-    @FXML
-    private Label lbl;
+    private File file;
 
     @FXML
     private void initialize(){
@@ -46,7 +48,7 @@ public class NewSiteInfoDialogController {
         try{
             FileChooser fc = new FileChooser();
             fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text file","*.png"));
-            File file = fc.showOpenDialog(null);
+            file = fc.showOpenDialog(null);
 
 
             Image img = new Image(file.toURI().toString());
@@ -58,18 +60,32 @@ public class NewSiteInfoDialogController {
                 lblBtn.setText("");
                 imgT.setImage(img);
             }
-
-
         }catch (Exception e){
             e.printStackTrace();
         }
 
     }
 
+    private boolean downloadImg(File tempFile) {
+        try{
+            Files.copy(tempFile.toPath(), Path.of("src/main/resources/img/icoSites/" + tempFile.getName()));
+            System.out.println("File " + tempFile.getName() + " was created");
+            return true;
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public void onButtonClick(MouseEvent mouseEvent) {
         if(mouseEvent.getButton() == MouseButton.PRIMARY){
             if(isAdded()){
+                JOptionPane.showMessageDialog(null, "Сайт " + nameSiteInput.getText() + " успешно добавлен", "Успешно", JOptionPane.INFORMATION_MESSAGE);
                 ((Node)(mouseEvent.getSource())).getScene().getWindow().hide();
+            }
+            else{
+                System.out.println("Error");
             }
         }
         else{
@@ -81,15 +97,21 @@ public class NewSiteInfoDialogController {
     private boolean isAdded(){
         try {
             Connection connection = (App.connection != null) ? App.connection : App.connectToDB();
-            String sql = "INSERT INTO sites(name, url) VALUES(?, ?)";
+            String sql = "INSERT INTO sites(name, url, pathImg) VALUES(?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, loginInput.getText());
-            preparedStatement.setString(2, Math.random() + "");
+            preparedStatement.setString(1, nameSiteInput.getText());
+            preparedStatement.setString(2, URLInput.getText());
+            preparedStatement.setString(3, "src/main/resources/img/icoSites/" + file.getName());
             preparedStatement.execute();
+
+            if(!downloadImg(file)){
+                throw new Exception("Ошибка скачивания картинки");
+            }
+            return true;
         }catch (Exception e){
             e.printStackTrace();
+            return false;
         }
-        return true;
     }
 
 
@@ -98,7 +120,7 @@ public class NewSiteInfoDialogController {
     }
 
     public TextField getLoginInput() {
-        return loginInput;
+        return nameSiteInput;
     }
 
 }
