@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 public class MainController {
     private Connection connection;
-    private ArrayList<Site> sites;
+    private ArrayList<Site> sites = new ArrayList<>();
     private ArrayList<Site> currentSites;
     private int temp;
     public static int countSites;
@@ -55,8 +55,6 @@ public class MainController {
     @FXML
     private void initialize() {
         if(connectDB()){
-            sites = new ArrayList<>();
-            i = 0;
             try{
                 ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM `sites`;");
                 while(rs.next()){
@@ -66,7 +64,7 @@ public class MainController {
                     sites.get(i).setUrl(rs.getString(3));
                     i++;
                 }
-                currentSites = new ArrayList<Site>(sites);
+                currentSites = new ArrayList<>(sites);
                 listViewSites.setCellFactory(param -> new ListViewSitesCell());
                 Site.refreshListView(currentSites, listViewSites);
 
@@ -196,17 +194,17 @@ public class MainController {
             if (b) {
                 setGraphic(null);
             } else {
-                if(a == null) {
-                    initGraph(o);
+                if(initGraph(o)){
+                    setGraphic(a);
                 }
-                setGraphic(a);
             }
         }
 
-        private void initGraph(Site o){
+        private boolean initGraph(Site o){
             s.setText(o.getName());
             a = new HBox(s);
             a.setAlignment(Pos.CENTER);
+            return true;
         }
     }
 
@@ -317,7 +315,7 @@ public class MainController {
             }
 
             ArrayList<Site> currentSites = new ArrayList<Site>(sites);
-            listViewSites.setCellFactory(param -> new ListViewSitesCell());
+
             Site.refreshListView(currentSites, listViewSites);
             sites = currentSites;
         } catch (Exception e) {
