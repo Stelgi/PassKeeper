@@ -13,12 +13,16 @@ import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import javax.swing.*;
+import java.io.File;
+import java.net.URI;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -62,6 +66,7 @@ public class MainController {
                     sites.get(i).setId(rs.getInt(1));
                     sites.get(i).setName(rs.getString(2));
                     sites.get(i).setUrl(rs.getString(3));
+                    sites.get(i).setPathImg(rs.getString(4));
                     i++;
                 }
                 currentSites = new ArrayList<>(sites);
@@ -187,6 +192,7 @@ public class MainController {
 
         private Label s = new Label("");
         private HBox a;
+        private ImageView imageView;
 
         @Override
         protected void updateItem(Site o, boolean b) {
@@ -201,8 +207,17 @@ public class MainController {
         }
 
         private boolean initGraph(Site o){
-            s.setText(o.getName());
-            a = new HBox(s);
+            if(o.getPathImg() == null){
+                s.setText(o.getName());
+                a = new HBox(s);
+            }else{
+                imageView = new ImageView(new Image(new File(o.getPathImg()).toURI().toString()));
+                imageView.setFitHeight(25);
+                imageView.setFitWidth(25);
+                s.setText(o.getName());
+                a = new HBox(7, imageView, s);
+            }
+
             a.setAlignment(Pos.CENTER);
             return true;
         }
